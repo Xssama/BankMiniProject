@@ -450,12 +450,14 @@ struct stUserData
 	bool MarkToUpdate = 0;
 };
 
-void PerfomeTransactionsMenuScreen(stUserData User, TransaCtions N);
-void MainMenueScreen(stUserData User);
-void PerfomeMainMenuScreen(stUserData User, Menus N);
-void PerformeManageUsersScreen(stUserData User, enManageUsers N);
+stUserData CurrentUser;
+
+void PerfomeTransactionsMenuScreen(TransaCtions N);
+void MainMenueScreen();
+void PerfomeMainMenuScreen(Menus N);
+void PerformeManageUsersScreen(enManageUsers N);
 void LoginScreen();
-void ManageUsersScreen(stUserData User);
+void ManageUsersScreen();
 
 short showclientList = 1;
 short Addnewclient = 2;
@@ -782,7 +784,7 @@ void PerformeFindUsersScreen() {
 
 
 
-void TransactionsMenueScreen(stUserData User) {
+void TransactionsMenueScreen() {
 	system("cls");
 	cout << "===========================================\n";
 	cout << "        Transactions screen       \n";
@@ -793,73 +795,73 @@ void TransactionsMenueScreen(stUserData User) {
 	cout << "\t[4] Back to main menue.\n";
 
 	cout << "===========================================\n";
-	PerfomeTransactionsMenuScreen(User,(TransaCtions)ReadUserChoise());
+	PerfomeTransactionsMenuScreen((TransaCtions)ReadUserChoise());
 }
-void GoBackToMainMenue(stUserData User) {
+void GoBackToMainMenue() {
 	cout << "\n\nPress Any Key to Go Back to main menue...";
 	system("pause>0");
-	MainMenueScreen(User);
+	MainMenueScreen();
 }
-void GoBackToTransactionsMenue(stUserData User) {
+void GoBackToTransactionsMenue() {
 	cout << "\n\nPress Any Key to Go Back to Transactions menue...";
 	system("pause>0");
-	TransactionsMenueScreen(User);
+	TransactionsMenueScreen();
 }
 
-void PerfomeTransactionsMenuScreen(stUserData User,TransaCtions N) {
+void PerfomeTransactionsMenuScreen(TransaCtions N) {
 	switch (N)
 	{
 	case Deposit:
 		DepositScreen();
-		GoBackToTransactionsMenue(User);
+		GoBackToTransactionsMenue();
 		break;
 	case Withdraw:
 		WithDrawScreen();
-		GoBackToTransactionsMenue(User);
+		GoBackToTransactionsMenue();
 		break;
 	case TotalBalance:
 		ShowClientsBalances();
-		GoBackToTransactionsMenue(User);
+		GoBackToTransactionsMenue();
 		break;
 	default:
-		MainMenueScreen(User);
+		MainMenueScreen();
 	}
 }
 
-void GoBackToManageUsersScreen(stUserData User) {
+void GoBackToManageUsersScreen() {
 	cout << "\n\nPress Any Key to Go Back to manage users menue...";
 	system("pause>0");
-	ManageUsersScreen(User);
+	ManageUsersScreen();
 }
 
-void PerformeManageUsersScreen(stUserData User,enManageUsers N) {
+void PerformeManageUsersScreen(enManageUsers N) {
 	switch (N) {
 	case 1 :
 		PerformeUsersListScreen();
-		GoBackToManageUsersScreen(User);
+		GoBackToManageUsersScreen();
 		break;
 	case 2:
 		PerformeAddNewUserScreen();
-		GoBackToManageUsersScreen(User);
+		GoBackToManageUsersScreen();
 		break;
 	case 3:
 		PerformedeleteUsersScreen();
-		GoBackToManageUsersScreen(User);
+		GoBackToManageUsersScreen();
 		break;
 	case 4:
 		PerformeUpdateUsersScreen();
-		GoBackToManageUsersScreen(User);
+		GoBackToManageUsersScreen();
 		break;
 	case 5:
 		PerformeFindUsersScreen();
-		GoBackToManageUsersScreen(User);
+		GoBackToManageUsersScreen();
 		break;
 	default :
-		MainMenueScreen(User);
+		MainMenueScreen();
 	}
 }
 
-void ManageUsersScreen(stUserData User) {
+void ManageUsersScreen() {
 	system("cls");
 	cout << "===========================================\n";
 	cout << "        Manage users screen       \n";
@@ -871,7 +873,7 @@ void ManageUsersScreen(stUserData User) {
 	cout << "\t[5] Find User.\n";
 	cout << "\t[6] Main menue.\n";
 	cout << "===========================================\n";
-	PerformeManageUsersScreen(User, (enManageUsers)ReadUserChoise());
+	PerformeManageUsersScreen((enManageUsers)ReadUserChoise());
 }
 
 void CheckTheAdminScreen() {
@@ -881,12 +883,12 @@ void CheckTheAdminScreen() {
 	cout << "\n========================================\n";
 }
 
-void PerfomeMainMenuScreen(stUserData User,Menus N) {
+void PerfomeMainMenuScreen(Menus N) {
 
 	switch (N)
 	{
 	case ShowClientList:
-		if (CheckIfUserHavePermissionTo(User, showclientList))
+		if (CheckIfUserHavePermissionTo(CurrentUser, showclientList))
 		{
 			ShowClientsData();
 		}
@@ -894,49 +896,49 @@ void PerfomeMainMenuScreen(stUserData User,Menus N) {
 		{
 			CheckTheAdminScreen();
 		}
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case AddNowClient:
-		if (CheckIfUserHavePermissionTo(User, Addnewclient))
+		if (CheckIfUserHavePermissionTo(CurrentUser, Addnewclient))
 			ShowAddNewClients();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case Deleteclient:
-		if (CheckIfUserHavePermissionTo(User, deleteclient))
+		if (CheckIfUserHavePermissionTo(CurrentUser, deleteclient))
 			ShowDeleteScreen();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case UpdateClient:
-		if (CheckIfUserHavePermissionTo(User, updateclient))
+		if (CheckIfUserHavePermissionTo(CurrentUser, updateclient))
 			ShowUpdateScreen();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case Findclient:
-		if (CheckIfUserHavePermissionTo(User, findclinet))
+		if (CheckIfUserHavePermissionTo(CurrentUser, findclinet))
 			ShowFindClientScreen();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case Transactions:
-		if (CheckIfUserHavePermissionTo(User, transactions))
-			TransactionsMenueScreen(User);
+		if (CheckIfUserHavePermissionTo(CurrentUser, transactions))
+			TransactionsMenueScreen();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case ManageUsers:
-		if (CheckIfUserHavePermissionTo(User, manageUsers))
-			ManageUsersScreen(User);
+		if (CheckIfUserHavePermissionTo(CurrentUser, manageUsers))
+			ManageUsersScreen();
 		else
 			CheckTheAdminScreen();
-		GoBackToMainMenue(User);
+		GoBackToMainMenue();
 		break;
 	case Logout:
 		LoginScreen();
@@ -946,7 +948,7 @@ void PerfomeMainMenuScreen(stUserData User,Menus N) {
 	}
 }
 
-void MainMenueScreen(stUserData User) {
+void MainMenueScreen() {
 	system("cls");
 	cout << "===========================================\n";
 	cout << "        Menu screen       \n";
@@ -960,7 +962,7 @@ void MainMenueScreen(stUserData User) {
 	cout << "\t[7] Manage Users.\n";
 	cout << "\t[8] Logout.\n";
 	cout << "===========================================\n";
-	PerfomeMainMenuScreen(User, (Menus)ReadUserChoise());
+	PerfomeMainMenuScreen((Menus)ReadUserChoise());
 }
 
 bool CheckUser(stUserData& User, vector<stUserData> vUsers) {
@@ -1003,7 +1005,8 @@ void LoginScreen() {
 		cin >> User.Password;
 		UserValid = CheckUser(User, vUsers);
 	}
-	MainMenueScreen(User);
+	CurrentUser = User;
+	MainMenueScreen();
 }
 
 int main() {
